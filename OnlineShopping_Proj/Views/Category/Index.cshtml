@@ -1,0 +1,71 @@
+﻿@model OnlineShopping_Proj.Models.ViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+@using (Html.BeginForm("Index", "Category", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Category</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.cat.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cat.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.cat.CategoryName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.prod.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.prod.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.prod.ProductName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>CategoryId</th>
+                    <th>CategoryName</th>
+                    <th>ProductId</th>
+                    <th>ProductName</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (@Model != null && @Model.Categorys != null)
+                {
+                    foreach (var item in @Model.Categorys)
+                    {
+                        <tr>
+                            <th scope="row">@item.CategoryId</th>
+                            <td>@item.CategoryName</td>
+                            <td>@item.Products.Select(x => x.ProductId).FirstOrDefault()</td>
+                            <td>@item.Products.Select(x => x.ProductName).FirstOrDefault()</td>
+                        </tr>
+
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
